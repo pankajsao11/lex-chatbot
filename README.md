@@ -19,7 +19,7 @@ The generative AI capability of QnAIntent in Amazon Lex lets you securely connec
 
 With this capability, you no longer need to create variations of intents, sample utterances, slots, and prompts to predict and handle a wide range of FAQs. You can simply connect QnAIntent to company knowledge sources and the bot can immediately handle questions using the allowed content.
 
-In this post, we demonstrate how you can build chatbots with QnAIntent that connects to a knowledge base in Amazon Bedrock (powered by Amazon OpenSearch Serverless as a vector database) and build rich, self-service, conversational experiences for your customers.
+In this, we demonstrate how to build chatbots with QnAIntent that connects to a knowledge base in Amazon Bedrock (powered by Amazon OpenSearch Serverless as a vector database) and build rich, self-service, conversational experiences for your customers.
 
 Solution overview
 The solution uses Amazon Lex, Amazon Simple Storage Service (Amazon S3), and Amazon Bedrock in the following steps:
@@ -50,6 +50,8 @@ Access enabled for the Amazon Titan Embeddings G1 – Text model and Anthropic C
 
 A data source in Amazon S3. For this, I've used docker pdf.
 
+![image](https://github.com/user-attachments/assets/454e1c27-c33d-4ace-b1da-a76678986ff2)
+
 Create a knowledge base
 To create a new knowledge base in Amazon Bedrock, complete the following steps. For more information, refer to Create a knowledge base.
 
@@ -70,6 +72,8 @@ To create a new knowledge base in Amazon Bedrock, complete the following steps. 
 9. Select the embedding model to vectorize the documents. For this post, we select Titan embedding G1 – Text v1.2.
 10. Select Quick create a new vector store to create a default vector store with OpenSearch Serverless.
 11. Choose Next.
+
+![image](https://github.com/user-attachments/assets/6e99de1e-0e06-4edf-a60a-9fec5b8ece12)
 
 12. Review the configurations and create your knowledge base. After the knowledge base is successfully created, you should see a knowledge base ID, which you need when creating the Amazon Lex bot.
 13. Choose Sync to index the documents.
@@ -105,13 +109,24 @@ Choose Add.
 
 After you add the QnAIntent, you’re redirected to configure the knowledge base.
 
-For Select model, choose Anthropic and Claude3 Haiku.
+For Select model, choose Anthropic and Claude V2.
 For Choose a knowledge store, select Knowledge base for Amazon Bedrock and enter your knowledge base ID.
 Choose Save intent.
 
+![image](https://github.com/user-attachments/assets/14199655-c7bd-4816-b4f4-00f40bc6a861)
+
 After you save the intent, choose Build to build the bot.
 You should see a Successfully built message when the build is complete.
+
+![image](https://github.com/user-attachments/assets/b5082b97-4508-4315-bb26-497c445fb1d2)
+
 You can now test the bot on the Amazon Lex console.
 Choose Test to launch a draft version of your bot in a chat window within the console.
 
 Enter questions to get responses.
+
+![image](https://github.com/user-attachments/assets/b3584da5-0449-44bb-acca-7d1bf9349265)
+
+![image](https://github.com/user-attachments/assets/cfcd151f-ab48-42d9-ae87-afb6ecb29859)
+
+![image](https://github.com/user-attachments/assets/a8d53331-fff7-420b-bb2d-e6b05c3265de)

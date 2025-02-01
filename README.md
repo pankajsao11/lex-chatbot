@@ -3,10 +3,17 @@ Building a self-service digital assistant using Amazon Lex and Amazon Bedrock Kn
 
 #Chatbot: A chatbot is an AI-powered software application designed to simulate human-like conversations through text or voice interactions. Chatbots can be used for customer support, information retrieval, automation, and other interactive experiences.
 
+#RAG: Retrieval-Augmented Generation (RAG) is an AI architecture that enhances the capabilities of Large Language Models (LLMs) by combining them with external knowledge sources.
+Instead of relying solely on their pre-trained data, RAG systems allow LLMs to access and incorporate relevant information from external sources like databases, documents, or APIs during the generation process.
 
 Amazon Lex is an AWS service for building conversational interfaces into applications using voice and text. Amazon Lex provides advanced conversational interfaces using voice and text channels. It features natural language understanding capabilities to recognize more accurate identification of user intent and fulfills the user intent faster. 
 
+![image](https://github.com/user-attachments/assets/04ea7edd-cbd8-421f-9881-9a5c955bc67d)
+
 Amazon Bedrock simplifies the process of developing and scaling generative AI applications powered by large language models (LLMs) and other foundation models (FMs). It offers access to a diverse range of FMs from leading providers such as Anthropic Claude, AI21 Labs, Cohere, and Stability AI, as well as Amazon’s proprietary Amazon Titan models. Additionally, Amazon Bedrock Knowledge Bases empowers you to develop applications that harness the power of Retrieval Augmented Generation (RAG), an approach where retrieving relevant information from data sources enhances the model’s ability to generate contextually appropriate and informed responses.
+
+![image](https://github.com/user-attachments/assets/6489864c-a1e3-40f3-92e8-14517c8a268e)
+
 
 The generative AI capability of QnAIntent in Amazon Lex lets you securely connect FMs to company data for RAG. QnAIntent provides an interface to use enterprise data and FMs on Amazon Bedrock to generate relevant, accurate, and contextual responses. You can use QnAIntent with new or existing Amazon Lex bots to automate FAQs through text and voice channels, such as Amazon Connect.
 
@@ -17,51 +24,55 @@ In this post, we demonstrate how you can build chatbots with QnAIntent that conn
 Solution overview
 The solution uses Amazon Lex, Amazon Simple Storage Service (Amazon S3), and Amazon Bedrock in the following steps:
 
-Users interact with the chatbot through a prebuilt Amazon Lex web UI.
-Each user request is processed by Amazon Lex to determine user intent through a process called intent recognition.
-Amazon Lex provides the built-in generative AI feature QnAIntent, which can be directly attached to a knowledge base to fulfill user requests.
-Amazon Bedrock Knowledge Bases uses the Amazon Titan embeddings model to convert the user query to a vector and queries the knowledge base to find the chunks that are semantically similar to the user query. The user prompt is augmented along with the results returned from the knowledge base as an additional context and sent to the LLM to generate a response.
-The generated response is returned through QnAIntent and sent back to the user in the chat application through Amazon Lex.
+1. Users interact with the chatbot through a prebuilt Amazon Lex web UI.
+2. Each user request is processed by Amazon Lex to determine user intent through a process called intent recognition.
+3. Amazon Lex provides the built-in generative AI feature QnAIntent, which can be directly attached to a knowledge base to fulfill user requests.
+4. Amazon Bedrock Knowledge Bases uses the Amazon Titan embeddings model to convert the user query to a vector and queries the knowledge base to find the chunks that are semantically similar to the user query. The user prompt is augmented along with the results returned from the knowledge base as an additional context and sent to the LLM to generate a response.
+5. The generated response is returned through QnAIntent and sent back to the user in the chat application through Amazon Lex.
 The following diagram illustrates the solution architecture and workflow.
 
-
+![chatbot](https://github.com/user-attachments/assets/2ecf5122-cd1e-4b29-bec9-e4d38afd4c1b)
 
 In the following sections, we look at the key components of the solution in more detail and the high-level steps to implement the solution:
 
-Create a knowledge base in Amazon Bedrock for OpenSearch Serverless.
-Create an Amazon Lex bot.
-Create new generative AI-powered intent in Amazon Lex using the built-in QnAIntent and point the knowledge base.
-Deploy the sample Amazon Lex web UI available in the GitHub repo. Use the provided AWS CloudFormation template in your preferred AWS Region and configure the bot.
+1. Create a knowledge base in Amazon Bedrock for OpenSearch Serverless.
+2. Create an Amazon Lex bot.
+3. Create new generative AI-powered intent in Amazon Lex using the built-in QnAIntent and point the knowledge base.
+
 Prerequisites
 To implement this solution, you need the following:
 
 An AWS account with privileges to create AWS Identity and Access Management (IAM) roles and policies. For more information, see Overview of access management: Permissions and policies.
 Familiarity with AWS services such as Amazon S3, Amazon Lex, Amazon OpenSearch Service, and Amazon Bedrock.
 Access enabled for the Amazon Titan Embeddings G1 – Text model and Anthropic Claude 3 Haiku on Amazon Bedrock. For instructions, see Model access.
-A data source in Amazon S3. For this post, we use Amazon shareholder docs (Amazon Shareholder letters – 2023 & 2022) as a data source to hydrate the knowledge base.
+
+![image](https://github.com/user-attachments/assets/92811e7d-f5e5-47b0-9d7b-370b12e38714)
+
+A data source in Amazon S3. For this, I've used docker pdf.
+
 Create a knowledge base
 To create a new knowledge base in Amazon Bedrock, complete the following steps. For more information, refer to Create a knowledge base.
 
-On the Amazon Bedrock console, choose Knowledge bases in the navigation pane.
-Choose Create knowledge base.
+1. On the Amazon Bedrock console, choose Knowledge bases in the navigation pane.
+2. Choose Create knowledge base.
+3. On the Provide knowledge base details page, enter a knowledge base name, IAM permissions, and tags.
+4. Choose Next.
 
-On the Provide knowledge base details page, enter a knowledge base name, IAM permissions, and tags.
-Choose Next.
+![image](https://github.com/user-attachments/assets/4f597760-236a-4495-a446-f39975a1ea90)
 
-For Data source name, Amazon Bedrock prepopulates the auto-generated data source name; however, you can change it to your requirements.
-Keep the data source location as the same AWS account and choose Browse S3.
+5. For Data source name, Amazon Bedrock prepopulates the auto-generated data source name; however, you can change it to your requirements.
+6. Keep the data source location as the same AWS account and choose Browse S3.
 
-Select the S3 bucket where you uploaded the Amazon shareholder documents and choose Choose.
-This will populate the S3 URI, as shown in the following screenshot.
-Choose Next.
+![image](https://github.com/user-attachments/assets/16e73bea-8815-4640-85de-bd43a6b1aff2)
 
-Select the embedding model to vectorize the documents. For this post, we select Titan embedding G1 – Text v1.2.
-Select Quick create a new vector store to create a default vector store with OpenSearch Serverless.
-Choose Next.
+7. Select the S3 bucket where you uploaded the Amazon shareholder documents and choose Choose. This will populate the S3 URI, as shown in the following screenshot.
+8. Choose Next.
+9. Select the embedding model to vectorize the documents. For this post, we select Titan embedding G1 – Text v1.2.
+10. Select Quick create a new vector store to create a default vector store with OpenSearch Serverless.
+11. Choose Next.
 
-Review the configurations and create your knowledge base.
-After the knowledge base is successfully created, you should see a knowledge base ID, which you need when creating the Amazon Lex bot.
-Choose Sync to index the documents.
+12. Review the configurations and create your knowledge base. After the knowledge base is successfully created, you should see a knowledge base ID, which you need when creating the Amazon Lex bot.
+13. Choose Sync to index the documents.
 
 Create an Amazon Lex bot
 Complete the following steps to create your bot:

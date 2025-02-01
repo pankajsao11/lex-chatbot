@@ -130,3 +130,11 @@ Enter questions to get responses.
 ![image](https://github.com/user-attachments/assets/cfcd151f-ab48-42d9-ae87-afb6ecb29859)
 
 ![image](https://github.com/user-attachments/assets/a8d53331-fff7-420b-bb2d-e6b05c3265de)
+
+Reference: https://aws.amazon.com/blogs/machine-learning/build-a-self-service-digital-assistant-using-amazon-lex-and-amazon-bedrock-knowledge-bases/
+
+https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html
+
+https://docs.aws.amazon.com/lex/latest/dg/what-is.html
+
+

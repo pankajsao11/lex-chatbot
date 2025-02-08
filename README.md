@@ -6,6 +6,10 @@ Building a self-service digital assistant using Amazon Lex and Amazon Bedrock Kn
 #RAG: Retrieval-Augmented Generation (RAG) is an AI architecture that enhances the capabilities of Large Language Models (LLMs) by combining them with external knowledge sources.
 Instead of relying solely on their pre-trained data, RAG systems allow LLMs to access and incorporate relevant information from external sources like databases, documents, or APIs during the generation process.
 
+#Vector Database: A database that stores data as vectors, which are numerical representations of data points. These vectors capture the meaning and relationships within the data, enabling similarity searches and AI-powered applications.
+
+#Vectorization: The process of converting data (text, images, etc.) into vectors. This involves using machine learning models to extract key features and represent them as a list of numbers, capturing the semantic meaning of the data. The cat sat on the mat": [0.8, 0.2, 0.1]
+
 Amazon Lex is an AWS service for building conversational interfaces into applications using voice and text. Amazon Lex provides advanced conversational interfaces using voice and text channels. It features natural language understanding capabilities to recognize more accurate identification of user intent and fulfills the user intent faster. 
 
 ![image](https://github.com/user-attachments/assets/04ea7edd-cbd8-421f-9881-9a5c955bc67d)
